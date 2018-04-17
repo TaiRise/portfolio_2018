@@ -1,3 +1,5 @@
+const data = require('./data')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -10,17 +12,25 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Portfolio de Huu-Tai LE' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Kanit:300,400,600,800' }
     ]
+  },
+  env: {
+    data: data
   },
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: false,
   /*
   ** Scss File
   */
   css: [ '@/assets/css/main.scss' ],
+  /*
+  ** Plugins
+  */
+  plugins: ['~plugins/vue-scrollto.js'],
   /*
   ** Build configuration
   */

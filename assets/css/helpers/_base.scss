@@ -1,0 +1,11 @@
+body{
+  font-family: $font;
+  color: $blue;
+  font-weight: 400;
+
+  main{
+    width: calc(16vh *50/9);
+    margin: auto;
+  }
+
+}
