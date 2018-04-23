@@ -1,9 +1,9 @@
 <template>
   <main>
-    <section class="intro">
+    <header class="intro">
       <h1>Tai Le</h1>
       <p>{{ windowHeight }}</p>
-    </section>
+    </header>
     <section class="projet__container">
       <Projet
         v-for="{ title, date, type } in projets"
@@ -14,6 +14,9 @@
         :middle="windowHeight"
       />
     </section>
+    <footer class="outro">
+
+    </footer>
   </main>
 </template>
 

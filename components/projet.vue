@@ -1,18 +1,25 @@
 <template>
-  <article class="projet__item" :class="{ active: scale > 0.75 }" :key="title">
-    <h2 class="projet__title">{{ title }}</h2>
+  <article class="projet__item" :class="{active : active}" :key="title">
+    <h2 class="projet__title"
+        :inner-html.prop="title | splitSpan"></h2>
     <p class="projet__meta">
-      <span class="projet__meta--date">{{ date }}</span>&nbsp;
-      <span class="projet__meta--type">{{ type }}</span>
+      <span class="projet__meta--date"
+            :inner-html.prop="date | splitSpan">
+      </span>
+      &nbsp;
+      <span class="projet__meta--type"
+            :inner-html.prop="type | splitSpan">
+      </span>
     </p>
-    <img class="projet__image" src="~/assets/test.jpg" :alt="title"
-         :style="{ transform: `translate3d(-50%,-50%,0) scale(${scale})` }">
-    {{ scale }}
+    <img class="projet__image"
+         src="~/assets/test.jpg"
+         :alt="title"
+         :style="style">
   </article>
 </template>
 
 <script>
-  let isScrolling
+  let isScrolling, cancelScroll
 
   export default {
     name: 'projet',
@@ -36,51 +43,76 @@
     },
     data() {
       return {
-        offsetMiddle: false,
-        scale: false
+        active: false,
+        offset: false,
+        scale: false,
+        autoScroll: true
+      }
+    },
+    computed: {
+      style() {
+        return {
+          transform: `translate3d(-50%,-50%,0) scale(${this.scale})`
+        }
+      }
+    },
+    filters: {
+      splitSpan(value){
+        let res = ''
+        value = value.toString()
+        for (let i of value){
+          res += `<span>${i}</span>`
+        }
+
+        return res
       }
     },
     methods: {
       getOffsetMiddle() {
-        let height = this.$el.clientHeight,
-          top = this.$el.offsetTop
-        this.offsetMiddle = top + (height / 2)
+        this.offset = this.$el.offsetTop
       },
-      getScale() {
-        let doc = document.documentElement,
-          pageOffsetTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0),
-          pageOffsetMiddle = pageOffsetTop + (this.middle / 2),
-          scale = ((this.middle - Math.abs(this.offsetMiddle - pageOffsetMiddle)) / this.middle).toFixed(2)
-        this.scale = (scale > .5) ? scale : .5
+      getStyle(pageOffsetMiddle) {
+        let coeff = ((this.middle - Math.abs(this.offset - pageOffsetMiddle)) / this.middle).toFixed(2)
+        this.scale = (coeff > .5) ? coeff : .5
       },
       goTo() {
-        console.log('End ' + this.offsetMiddle)
-        let options = {
-          container: 'body',
-          easing: [0.45, 0.05, 0.55, 0.95],
-          offset: -parseInt(this.middle / 4),
-          cancelable: true,
-          onStart (element) {
-            // scrolling started
-          },
-          onDone (element) {
-            // scrolling is done
-          },
-          onCancel () {
-            // scrolling has been interrupted
-          },
-          x: false,
-          y: true
-        }
+        console.log('End ' + this.offset)
+        let vm = this,
+          options = {
+            container: 'body',
+            easing: [0.45, 0.05, 0.55, 0.95],
+            offset: -parseInt(this.middle / 4),
+            cancelable: true,
+            onStart(element) {
+              vm.autoScroll = false
+            },
+            onDone(element) {
+              setTimeout(() => {
+                vm.autoScroll = true
+                vm.active = true
+              }, 150)
 
-        let cancelScroll = this.$scrollTo(this.$el, 1000, options)
+            },
+            onCancel() {
+              setTimeout(() => vm.autoScroll = true, 150)
+            },
+            x: false,
+            y: true
+          }
+
+        cancelScroll = this.$scrollTo(this.$el, 500, options)
       },
       handleScroll() {
-        this.getScale()
-        if (this.scale > 0.75) {
+        let doc = document.documentElement,
+          pageOffsetTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0),
+          pageOffsetMiddle = pageOffsetTop + (this.middle / 4)
+
+        this.active = false
+        this.getStyle(pageOffsetMiddle)
+        if (this.scale > 0.75 && pageOffsetTop > (this.middle / 4)) {
           window.clearTimeout(isScrolling)
           isScrolling = setTimeout(() => {
-            this.goTo()
+            if (this.autoScroll) this.goTo()
           }, 100)
         }
       },
@@ -90,7 +122,7 @@
     },
     beforeMount() {
       this.getOffsetMiddle()
-      this.getScale()
+      this.getStyle()
       window.addEventListener('scroll', this.handleScroll)
       window.addEventListener('resize', this.handleResize)
     },

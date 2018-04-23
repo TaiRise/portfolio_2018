@@ -1,5 +1,18 @@
 .projet{
 
+  &__title{
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+  }
+
+  &__meta{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    text-align: right;
+  }
+
   &__item{
     position: relative;
     box-sizing: border-box;
