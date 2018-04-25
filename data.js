@@ -1,40 +1,46 @@
-const data = {
-  s_travel: {
+const data = [
+  {
     title: 'S Travel',
+    url: 's_travel',
     date: 2016,
     type: 'Ican',
     desc: ''
   },
-  buffet_crampon: {
+  {
     title: 'Buffet Crampon',
+    url: 'buffet_crampon',
     date: 2017,
     type: 'Biznet',
     desc: ''
   },
-  atelier_tt: {
+  {
     title: 'Atelier de TT',
+    url: 'atelier_tt',
     date: 2017,
     type: 'Ican',
     desc: ''
   },
-  datvi_ha: {
+  {
     title: 'Dat-Vi Ha',
+    url: 'datvi_ha',
     date: 2017,
     type: 'Freelance',
     desc: ''
   },
-  ffsurf: {
+  {
     title: 'Fédération Française de Surf',
+    url: 'ff_surf',
     date: 2018,
     type: 'School',
     desc: ''
   },
-  fruits_detendus: {
+  {
     title: 'Les Fruits Détendus',
+    url: 'fruits_detendus',
     date: 2018,
     type: '148 Agency',
     desc: ''
   }
-}
+]
 
 module.exports = data

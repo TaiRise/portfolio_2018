@@ -1,0 +1,45 @@
+.scrollbar{
+  position: fixed;
+  top: 25vh;
+  right: 75px;
+  height: 50vh;
+
+  &__container{
+    position: absolute;
+    top: 50px;
+    left: 5.5px;
+    height: 2px;
+    width: calc(50vh - 100px);
+    background-color: $light-blue;
+    transform-origin: top left;
+    transform: rotate(90deg);
+    overflow: hidden;
+  }
+
+  &__progress{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: lighten($light-blue, 50);
+    transition: .1s linear;
+  }
+
+  &__current,
+  &__total{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    font-weight: 300;
+  }
+
+  &__current{
+    top: 0;
+  }
+
+  &__total{
+    bottom: 0;
+  }
+}
