@@ -1,20 +1,23 @@
 <template>
   <article class="projet__item" :class="{active : active}" :key="title">
-    <h2 class="projet__title projet__text"
-        :inner-html.prop="title | splitSpan"></h2>
-    <p class="projet__meta">
-      <span class="projet__meta--date projet__text"
-            :inner-html.prop="date | splitSpan">
-      </span>
-      &nbsp;
-      <span class="projet__meta--type projet__text"
-            :inner-html.prop="type | splitSpan">
-      </span>
-    </p>
-    <img class="projet__image"
-         src="~/assets/test.jpg"
-         :alt="title"
-         :style="style">
+    <div class="projet__wrapper"
+         :style="styleWrapper">
+      <div class="projet__text--up" :style="styleTextUp">
+        <h2 class="projet__title projet__text projet__text--left" :inner-html.prop="title | splitSpan"></h2>
+      </div>
+      <div class="projet__text--down" :style="styleTextDown">
+        <p class="projet__meta">
+          <span class="projet__meta--date projet__text projet__text--right" :inner-html.prop="date | splitSpan"></span>
+          <span class="projet__meta--type projet__text projet__text--right" :inner-html.prop="type | splitSpan"></span>
+        </p>
+      </div>
+      <div class="projet__wrapper--overflow">
+        <img class="projet__image"
+             src="~/assets/test.jpg"
+             :alt="title"
+              :style="styleImg">
+      </div>
+    </div>
   </article>
 </template>
 
@@ -55,22 +58,50 @@
       }
     },
     computed: {
-      style() {
+      styleWrapper() {
         return {
-          transform: `translate3d(-50%,-50%,0) scale(${this.scale})`
+          transform: `scale(${this.scale})`
         }
       },
+      styleImg() {
+        let scale = 2 - this.scale
+        return {
+          transform: `scale(${scale})`,
+          opacity: this.opacity
+        }
+      },
+      styleTextUp() {
+        return {
+          transform: `translate3d(0,-${this.translate}%,0)`
+        }
+      },
+      styleTextDown() {
+        return {
+          transform: `translate3d(0,${this.translate}%,0)`
+        }
+      },
+      coeff() {
+        let coeff = ((this.windowHeight - Math.abs(this.offset - this.offsetTop)) / this.windowHeight).toFixed(10)
+        return Number(coeff)
+      },
       scale() {
-        let coeff = ((this.windowHeight - Math.abs(this.offset - this.offsetTop)) / this.windowHeight).toFixed(5)
-        return (coeff > .5) ? coeff : .5
+        return (this.coeff > .5) ? this.coeff : .5
+      },
+      opacity() {
+        let opacity = this.coeff * 1.25
+        return (opacity > 1) ? 1 : opacity
+      },
+      translate() {
+        let translate = this.coeff * 200 - 100
+        return translate
       }
     },
     watch: {
-     scale(val) {
-       this.active = (val > 0.75) ? true : false
-     },
+      scale(val) {
+        this.active = (val > 0.75) ? true : false
+      },
       active(val) {
-       if (val) this.$emit('id', this.index)
+        if (val) this.$emit('id', this.index)
       }
     },
     filters: {
