@@ -1,4 +1,5 @@
 body{
+  cursor: url(~/assets/cursor.svg) 5 5, none;
   font-family: $font;
   font-size: 12px;
   color: $blue;
@@ -6,7 +7,8 @@ body{
   background-color: #FEFEFE;
 
   main{
-    width: calc(16vh *50/9);
+    max-width: calc(16vh * 50/9);
+    padding: 0 145px;
     margin: auto;
   }
 

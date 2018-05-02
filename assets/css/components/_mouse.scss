@@ -1,0 +1,12 @@
+$mouseDimension: 40px;
+
+#mouse{
+    position: fixed;
+    top: calc(-#{$mouseDimension} / 2);
+    left: calc(-#{$mouseDimension} / 2);
+    width: $mouseDimension;
+    height: $mouseDimension;
+    border-radius: 50%;
+    background-color: rgba($light-blue, .3);
+    z-index: 999999;
+}
