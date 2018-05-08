@@ -3,6 +3,7 @@
     <Scrollbar :current="index"
       :total="projets.length"
       :progress="progress"/>
+    <div id="scroll__container" ref="main">
     <section class="intro">
       <h1>Tai Le</h1>
       <p>{{ windowHeight }}</p>
@@ -23,6 +24,7 @@
     <section class="outro">
 
     </section>
+    </div>
   </main>
 </template>
 
@@ -31,6 +33,7 @@
 
   import Projet from '~/components/projet'
   import Scrollbar from '~/components/scrollbar'
+  import VirtualScroll from 'virtual-scroll'
 
   export default {
     components: {
@@ -47,7 +50,10 @@
         windowHeight: false,
         bodyHeight: false,
         offset: false,
-        index: 0
+        index: 0,
+        main: false,
+        mainHeight: false,
+        scrollY: 0
       }
     },
     computed: {
@@ -55,20 +61,34 @@
         return ((this.offset-(this.windowHeight/4))/this.bodyHeight)*100
       }
     },
-    methods: {
-      init() {
-        this.windowHeight = window.innerHeight
-        this.bodyHeight = document.body.offsetHeight - this.windowHeight
+    watch: {
+      scrollY() {
         this.getOffset()
+      } 
+    },
+    methods: {
+      vScrollInit() {
+        this.vScroll = new VirtualScroll({
+          mouseMultiplier: 0.1
+        })
+        this.vScroll.on((e, context) => {
+          this.scrollY += e.deltaY
+          this.scrollY = Math.max(-this.bodyHeight, this.scrollY)
+          this.scrollY = Math.min(0, this.scrollY)
+
+          requestAnimationFrame(() => {
+            this.vScrollUpdate()
+          })
+        })
+      },
+      vScrollUpdate() {
+        this.main.style.transform = `translate3d(0,${this.scrollY}px,0)`
       },
       setIndex(id){
         this.index = id
       },
       getOffset() {
-        let doc = document.documentElement,
-          pageOffsetTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
-
-        this.offset = pageOffsetTop + (this.windowHeight / 4)
+        this.offset = -this.scrollY + (this.windowHeight / 4)
       },
       goTo() {
         console.log('End ' + this.offsetTop)
@@ -98,20 +118,22 @@
         cancelScroll = this.$scrollTo(this.$el, 500, options)
       },
       handleResize() {
-        this.init()
-      },
-      handleScroll() {
-        this.getOffset()
+        this.windowHeight = window.innerHeight
+        this.bodyHeight = this.main.offsetHeight - this.windowHeight
       }
     },
     beforeMount() {
-      this.init()
-      window.addEventListener('scroll', this.handleScroll)
       window.addEventListener('resize', this.handleResize)
     },
+    mounted() {
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+      this.main = this.$refs.main
+      this.handleResize()
+      this.vScrollInit()
+    },
     beforeDestroy() {
-      window.removeEventListener('scroll', this.handleScroll)
       window.removeEventListener('resize', this.handleResize)
+      this.vScroll.destroy()
     }
   }
 </script>

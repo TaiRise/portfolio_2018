@@ -65,8 +65,8 @@
       active(val) {
         if (val) this.$emit('id', this.index)
       },
-      offset(val) {
-        window.requestAnimationFrame(() => {
+      offset() {
+        requestAnimationFrame(() => {
           this.animation()
         })
       }

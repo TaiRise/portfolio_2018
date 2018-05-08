@@ -1,4 +1,5 @@
 body{
+  overflow: hidden;
   cursor: url(~/assets/cursor.svg) 5 5, none;
   font-family: $font;
   font-size: 12px;
@@ -7,6 +8,11 @@ body{
   background-color: #FEFEFE;
 
   main{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     max-width: calc(16vh * 50/9);
     padding: 0 145px;
     margin: auto;

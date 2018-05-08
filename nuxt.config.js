@@ -1,6 +1,7 @@
 const data = require('./data')
 
 module.exports = {
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -30,7 +31,9 @@ module.exports = {
   /*
   ** Plugins
   */
-  plugins: ['~plugins/vue-scrollto.js'],
+  plugins: [
+    '~plugins/vue-scrollto.js'
+  ],
   /*
   ** Build configuration
   */
