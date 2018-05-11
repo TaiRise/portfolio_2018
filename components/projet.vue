@@ -71,15 +71,6 @@
         })
       }
     },
-    filters: {
-      splitSpan(value) {
-        let res = ''
-        value = value.toString()
-        for (let i of value) res += i === ' ' ? i : `<span>${i}</span>`
-
-        return res
-      }
-    },
     methods: {
       init() {
         this.offsetTop = this.$el.offsetTop
@@ -102,15 +93,15 @@
         this.txtUp.style.transform = `translate3d(0,-${translate}%,0)`
         this.txtDown.style.transform = `translate3d(0,${translate}%,0)`
 
-        this.active = (scaleWrapper > 0.75) ? true : false
+        this.active = (scaleWrapper > 0.85) ? true : false
       }
     },
     beforeMount() {
       window.addEventListener('resize', this.handleResize)
     },
     mounted() {
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame      
       this.init()
-      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
       this.wrapper = this.$refs.wrapper
       this.image = this.$refs.image
       this.txtUp = this.$refs.txtUp

@@ -32,7 +32,7 @@ module.exports = {
   ** Plugins
   */
   plugins: [
-    '~plugins/vue-scrollto.js'
+    '~plugins/filters.js'
   ],
   /*
   ** Build configuration

@@ -1,3 +1,30 @@
 .intro{
+  box-sizing: border-box;
   height: 75vh;
+  padding-top: 25vh;
+
+  p:first-child{
+    font-size: 3em;
+    font-weight: 800;
+  }
+
+  h1, p{
+    font-size: 1em;
+    font-weight: 300;
+  }
+
+  .word{
+    span{
+      transform: translate3d(2em,0,0);
+      opacity: 0;
+      transition: .8s $bounce;
+    }
+  }
+
+  &.active{
+    span {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
 }

@@ -2,13 +2,15 @@
   <main>
     <Scrollbar :current="index"
       :total="projets.length"
-      :progress="progress"/>
+      :progress="progress"
+      :class="{ active: loaded }"/>
     <div id="scroll__container" ref="main">
-    <section class="intro">
-      <h1>Tai Le</h1>
-      <p>{{ windowHeight }}</p>
+    <section class="intro" :class="{ active: loaded }">
+      <p :inner-html.prop="intro[0] | splitSpan"></p>
+      <h1 :inner-html.prop="intro[1] | splitSpan"></h1>
+      <p :inner-html.prop="intro[2] | splitSpan"></p>
     </section>
-    <section class="projet__container">
+    <section class="projet__container" :class="{ active: loaded }">
       <Projet
         v-for="({ title, date, type }, index) in projets"
         :key="title"
@@ -47,13 +49,19 @@
     },
     data() {
       return {
+        intro: [
+          'Hello There.',
+          'My name is Huu-Tai LE and i\'m a Creative Developer',
+          'Working at 148 Agency'
+        ],
         windowHeight: false,
         bodyHeight: false,
         offset: false,
         index: 0,
         main: false,
         mainHeight: false,
-        scrollY: 0
+        scrollY: 0,
+        loaded: false
       }
     },
     computed: {
@@ -69,7 +77,7 @@
     methods: {
       vScrollInit() {
         this.vScroll = new VirtualScroll({
-          mouseMultiplier: 0.1
+          mouseMultiplier: 0.2
         })
         this.vScroll.on((e, context) => {
           this.scrollY += e.deltaY
@@ -129,7 +137,9 @@
       window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
       this.main = this.$refs.main
       this.handleResize()
+      this.offset = this.windowHeight / 4
       this.vScrollInit()
+      this.loaded = true
     },
     beforeDestroy() {
       window.removeEventListener('resize', this.handleResize)
