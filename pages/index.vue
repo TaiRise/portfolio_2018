@@ -12,8 +12,8 @@
     </section>
     <section class="projet__container" :class="{ active: loaded }">
       <Projet
-        v-for="({ title, date, type }, index) in projets"
-        :key="title"
+        v-for="({ title, date, type, key }, index) in projets"
+        :key="key"
         :index="index + 1"
         :title="title"
         :date="date"
@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  const data = require('~/data')
-
+  // const data = require('~/data')
+  import {db} from '~/db'
   import Projet from '~/components/projet'
   import Scrollbar from '~/components/scrollbar'
   import VirtualScroll from 'virtual-scroll'
@@ -41,11 +41,6 @@
     components: {
       Projet,
       Scrollbar
-    },
-    asyncData() {
-      return {
-        projets: data
-      }
     },
     data() {
       return {
@@ -64,6 +59,17 @@
         loaded: false
       }
     },
+    firebase: {
+      projets: {
+        source: db.ref(),
+        cancelCallback(err) {
+          console.error(err);
+        },
+        readyCallback() {
+          setTimeout(() => this.init(), 500)
+        }
+      }
+    },
     computed: {
       progress() {
         return ((this.offset-(this.windowHeight/4))/this.bodyHeight)*100
@@ -75,9 +81,17 @@
       } 
     },
     methods: {
+      init() {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+        this.main = this.$refs.main
+        this.handleResize()
+        this.offset = this.windowHeight / 4
+        this.vScrollInit()
+        this.loaded = true
+      },
       vScrollInit() {
         this.vScroll = new VirtualScroll({
-          mouseMultiplier: 0.2
+          mouseMultiplier: 0.4
         })
         this.vScroll.on((e, context) => {
           this.scrollY += e.deltaY
@@ -132,14 +146,6 @@
     },
     beforeMount() {
       window.addEventListener('resize', this.handleResize)
-    },
-    mounted() {
-      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
-      this.main = this.$refs.main
-      this.handleResize()
-      this.offset = this.windowHeight / 4
-      this.vScrollInit()
-      this.loaded = true
     },
     beforeDestroy() {
       window.removeEventListener('resize', this.handleResize)

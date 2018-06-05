@@ -2,12 +2,12 @@
   <article class="projet__item" :class="{ active: active }" :key="title">
     <div class="projet__wrapper" :style="{height: height + 'px'}" ref="wrapper">
       <div class="projet__text--up" ref="txtUp">
-        <h2 class="projet__title projet__text projet__text--left" :inner-html.prop="title | splitSpan"></h2>
+        <h2 class="projet__title projet__text projet__letter--up" :inner-html.prop="title | splitSpan"></h2>
       </div>
       <div class="projet__text--down" ref="txtDown">
         <p class="projet__meta">
-          <span class="projet__meta--date projet__text projet__text--right" :inner-html.prop="date | splitSpan"></span>
-          <span class="projet__meta--type projet__text projet__text--right" :inner-html.prop="type | splitSpan"></span>
+          <span class="projet__meta--date projet__text projet__letter--down" :inner-html.prop="date | splitSpan"></span>
+          <span class="projet__meta--type projet__text projet__letter--down" :inner-html.prop="type | splitSpan"></span>
         </p>
       </div>
       <div class="projet__wrapper--overflow">

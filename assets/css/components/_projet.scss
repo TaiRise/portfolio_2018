@@ -14,7 +14,7 @@
       white-space: nowrap;
       span {
         opacity: 0;
-        transition: .8s $bounce;
+        transition: .6s $bounce;
       }
     }
 
@@ -32,17 +32,34 @@
       left: 5%;
     }
 
-    &--left{
-      span:not(.word){
-        transform: translate3d(5em,0, 0);
+  }
+
+  &__letter{
+    
+    &--left {
+      span:not(.word) {
+        transform: translate3d(2em, 0, 0);
       }
     }
 
-    &--right{
-      span:not(.word){
-        transform: translate3d(-5em,0, 0);
+    &--right {
+      span:not(.word) {
+        transform: translate3d(-2em, 0, 0);
       }
     }
+
+    &--down {
+      span:not(.word) {
+        transform: translate3d(0, -2em, 0);
+      }
+    }
+
+    &--up {
+      span:not(.word) {
+        transform: translate3d(0, 2em, 0);
+      }
+    }
+
   }
 
   &__title{
@@ -89,7 +106,7 @@
         }
 
         &__wrapper{
-          box-shadow: 0 30px 33px -25px rgba(0,0,0,.7);
+          box-shadow: 0 30px 33px -25px rgba(0,0,0,.5);
         }
       }
     }
@@ -104,6 +121,7 @@
     box-shadow: 0 30px 33px -25px rgba(0,0,0,0);
     transition: box-shadow .4s ease-in-out;
     &--overflow{
+      background-color: $backColor;
       position: absolute;
       overflow: hidden;
       width: 100%;

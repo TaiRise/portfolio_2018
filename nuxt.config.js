@@ -1,5 +1,3 @@
-const data = require('./data')
-
 module.exports = {
   mode: 'spa',
   /*
@@ -16,9 +14,6 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Kanit:300,400,600,800' }
     ]
-  },
-  env: {
-    data: data
   },
   /*
   ** Customize the progress bar color
